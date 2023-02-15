@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{% static 'images/bg_1.jpg'%}');" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+       <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>Blog <i class="fa fa-chevron-right"></i></span></p>
+       <h1 class="mb-3 bread">Noticias</h1>
+     </div>
+   </div>
+ </div>
+</section>
+
+<section class="ftco-section bg-light">
+  <div class="container-fluid px-md-5">
+    <div class="row d-flex">
+
+      {% for i in blog %}
+      <div class="col-lg-4 ftco-animate">
+        <div class="blog-entry">
+          <a href="{{ i.get_url }}" class="block-20" style="background-image: url({{i.imagen.url}});">
+          </a>
+          <div class="d-flex">
+           <div class="meta pt-3 text-right pr-2">
+            <div><a href="{{ i.get_url }}"><span class="fa fa-calendar mr-2"></span>{{i.created_at}}</a></div>
+            <div><a href="{{ i.get_url }}"><span class="fa fa-user mr-2"></span>{{i.autor.username}}</a></div>
+            <div><a href="{{ i.get_url }}" class="meta-chat"><span class="fa fa-comment mr-2"></span> 3</a></div>
+          </div>
+          <div class="text d-block">
+           <h3 style="text-align: justify;" class="heading"><a href="{{ i.get_url }}">{{i.titulo}}</a></h3>
+           <p style="text-align: justify;">{{i.descripcion | slice:":120"}}.....<br><p><a href="{{i.get_url}}" class="btn btn-secondary btn-outline-secondary py-2 px-3">leer mas</a></p></p></p>
+         </div>
+       </div>
+     </div>
+        </div>
+
+      {% endfor %}
+
+</div>
+
+
+<div class="row mt-5">
+  <div class="col text-center">
+    <div class="block-27">
+
+      {% if blog.has_other_pages %}
+
+            <ul>
+              {% if blog.has_previous %}
+              <li ><a href="?page={{blog.previous_page_number}}">&lt;</a></li>              
+             {% else %}
+             
+             {% endif %}
+
+             {% for i in blog.paginator.page_range %}
+              
+              {% if blog.number == i %}
+                  <li class="active"><a href="#"><span>{{i}}</span></a></li>
+                  {% else %}
+                  <li><a href="?page={{i}}"><span>{{i}}</span></a></li>
+              {% endif %}
+            
+            
+                {% endfor %}
+              
+              {% if blog.has_next %}
+              <li><a href="?page={{blog.next_page_number}}">&gt;</a></li>
+              {% else %}
+
+              {% endif %}
+
+            </ul>
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+
+{% endblock %}

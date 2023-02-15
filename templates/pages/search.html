@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+
+  <div class="card text-center ">
+        <div class="card-header">
+            Consultar estado de Afiliado
+        </div>
+         <div class="card-body">
+
+            <h5 class="card-title">Consultar</h5>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-12 col-xl-12">
+                    <form class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+                        action="{% url 'search' %}">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <label for="exampleInputEmail1">Cedula Afiliado: </label> </br>
+                            <input type="text" class="form-control" required style="align-items: center; border-radius: 25px;" placeholder="Digite su cedula"
+                                name="buscarafiliado">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" style="border-radius: 5px;" type="submit">
+                                     <i class="fa fa-search" aria-hidden="true"> Buscar</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+
+
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-12 col-xl-12">
+        <div class="card mx-auto" style="width: 36rem;">
+
+           {% if afiliado_consulta %}
+
+                 
+
+
+            {% else %}
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>El Afiliado Cedula</strong> {{buscarafiliado}} No fue encontrado, verifique su numero e intento de nuevo.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endif %}
+
+              {% for item in afiliado_consulta %}
+                
+                     
+              
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong class="text-center" style="display: flex; align-items: center; justify-content: center;" >Resultado Exitoso</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+            <img class="card-img-top" src="{% static 'images/afiliado_default.png' %}" style="width: 100px; height: 100px; display: block; margin: auto;" alt="Card image cap">
+           
+               
+            <div class="card-body">
+
+            
+              <h5 class="card-title mx-auto" style="font-weight; text-align: center;">Datos del Afiliado Solicitado</h5>
+                   
+                  
+
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Nombre: <span class="">{{item.Nombre_del_Afiliado}}</span></li>
+                <li class="list-group-item">Cedula: {{item.Cedula}}</li>
+                <li class="list-group-item">Nss: {{item.Nss}}</li>
+                <li class="list-group-item">Poliza: {{item.Poliza}}</li>
+                <li class="list-group-item">Sexo: {{item.get_Sexo_display}}</li>
+              </ul>
+              {% if item.get_Estado_display != 'ACTIVO' %}
+              <button href="#" style="border-radius: 25px; display: block; margin: auto;" class="btn btn-warning">Estado de Afilicion <strong>EN PROCESO</strong></button>
+              {% else %}
+              <button href="#" style="border-radius: 25px; display: block; margin: auto;" class="btn btn-success">Estado de Afilicion <strong>ACTIVO</strong></button>
+              {% endif %}
+
+              {% endfor %} 
+
+            </div>
+          </div>
+
+        </div> 
+    </div>  
+</div>
+
+
+
+
+{% endblock %}

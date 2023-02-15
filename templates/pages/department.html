@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+<style>
+	#customers {
+	  font-family: Arial, Helvetica, sans-serif;
+	  border-collapse: collapse;
+	  width: 100%;
+	}
+	
+	#customers td, #customers th {
+	  border: 1px solid #ddd;
+	  padding: 8px;
+	}
+	
+	#customers tr:nth-child(even){background-color: #f2f2f2;}
+	
+	#customers tr:hover {background-color: #ddd;}
+	
+	#customers th {
+	  padding-top: 12px;
+	  padding-bottom: 12px;
+	  text-align: left;
+	  background-color: #34ce57;
+	  color: white;
+	}
+	</style>
+	
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('{% static 'images/bg_1.jpg' %}');" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-end justify-content-start">
+				<div class="col-md-9 ftco-animate pb-5">
+					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>Departments <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">Departments</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section">
+		<div class="container">
+			
+			<div class="justify-content-left mb-5 pb-2">
+				
+				<div class="col-lg-4 sidebar ftco-animate">
+					<div class="sidebar-box">
+						<form action="#" class="search">
+							<div class="input-group w-100">
+							  <input type="text" class="form-control" style="width:60%;" placeholder="Buscar prestador" name="keyword">
+				
+							  <div class="input-group-append">
+								<button class="btn btn-primary" type="submit">
+								  <i class="fa fa-search"></i>
+								</button>
+							  </div>
+							</div>
+						  </form> 
+					</div>
+							<div class="sidebar-box ftco-animate">
+							<h3 class="heading-sidebar">Tipo de Prestador</h3>
+							<ul class="categories">
+							<li><a href="#">CLINICAS <span>(12)</span></a></li>
+							<li><a href="#">CENTROS DE DIAGNOSTICOS <span>(22)</span></a></li>
+							<li><a href="#">LABORATORIO DE PATOLOGIA <span>(37)</span></a></li>
+							<li><a href="#">LABORATORIO RADIOGRAFICO <span>(42)</span></a></li>
+							<li><a href="#">POLICLINICAS <span>(42)</span></a></li>
+							<li><a href="#">ODONTOLOGICOS <span>(42)</span></a></li>
+							<li><a href="#">CENTROS DE VACUNACION <span>(42)</span></a></li>
+							</ul>
+						</div>
+			
+				
+				</div>
+
+
+			</div>
+			
+
+			<div class="row tabulation mt-4 ftco-animate">
+				
+				<div class="col-md-12 header_fixed">
+					
+					<table class="table" id="customers">
+						<thead>
+						<tr>
+						  
+						  <th scope="col">Nombre Prestador</th>
+						  <th scope="col">Telefono </th>
+						  <th scope="col">Direccion </th>
+						   
+						  <th scope="col">Ciudad </th>
+						  <th scope="col">Tipo de Prestador </th>
+						  <th scope="col">Sector</th>
+						</tr>
+					</thead>
+						{% for i in entity %}
+						<tbody>
+						<tr>
+						  
+						  <td>{{ i.nombre }}</td>
+						  <td>{{ i.telf1 }}</td>
+						  <td>{{ i.direccion }}</td>
+						  
+						  <td>{{ i.ciudad }}</td>
+						  <td>{{ i.tipo_prestador }}</td>
+						  <td>{{ i.sector }}</td>
+						</tr>
+					</tbody>
+						{% endfor %}
+					  </table>
+
+				</div>
+
+
+			</div>
+
+			{% if paginator.num_pages > 1%}
+				<div class="d-flex justify-content-center my-3">
+					<ul class="pagination">
+						{% if entity.has_previous %}
+							<li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></li>
+						{% endif %}
+						{% for page in paginator.page_range %}
+							{% if forloop.last and page != entity.number and paginator.num_pages > 7 %} 
+								{% if entity.next_page_number != paginator.num_pages%}
+								<li class="page-item">
+									<a class="page-link" href="?page={{ entity.number | add:1}}#pagtable">...</a>
+								</li>
+								{% endif %}
+							<li class="page-item">
+									<a class="page-link" href="?page={{paginator.num_pages}}#pagtable">{{paginator.num_pages}}</a>
+							</li>
+							{% endif %}
+							{% if page == entity.number and page > 7 %}
+							<li class="page-item">
+								<a class="page-link" href="?page={{ page | add:-1 }}#pagtable">...</a>
+							</li>    
+							{% endif %}
+							{% if page < 7 or page == entity.number %}
+							<li class="page-item {% if page == entity.number %}active{% endif %}">
+								<a class="page-link" href="?page={{ page }}#pagtable">{{ page }}</a>
+							</li>
+							{% endif %}
+						{% endfor %}
+						{% if entity.has_next %}
+							<li class="page-item d-none d-sm-block">
+								<a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a>
+							</li>
+						{% endif %}
+						</ul>
+					</div>
+					<div class="d-flex justify-content-center d-sm-none">            
+						{% if entity.has_previous %}
+							<span class="page-item"><a  class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></span>
+						{% endif %}
+						{% if entity.has_next %}
+							<span class="page-item"><a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a></span>
+						{% endif %}
+						<br>
+						<br>
+				</div>
+		{% endif %}
+
+		<!----<div class="row mt-5">
+				<div class="col text-center">
+				  <div class="block-27">
+			  
+					{% if centros.has_other_pages %}
+			  
+						  <ul>
+							{% if centros.has_previous %}
+							<li ><a href="?page={{centros.previous_page_number}}">&lt;</a></li>              
+						   {% else %}
+						   
+						   {% endif %}
+			  
+						   {% for i in centros.paginator.page_range %}
+							
+							{% if centros.number == i %}
+								<li class="active"><a href="#"><span>{{i}}</span></a></li>
+								{% else %}
+								<li><a href="?page={{i}}"><span>{{i}}</span></a></li>
+							{% endif %}
+						  
+						  
+							  {% endfor %}
+							
+							{% if centros.has_next %}
+							<li><a href="?page={{centros.next_page_number}}">&gt;</a></li>
+							{% else %}
+			  
+							{% endif %}
+			  
+						  </ul>
+			  
+					{% endif %}
+				  </div>
+				</div>
+			  </div>
+
+		</div>
+
+	-->
+
+
+	</section>
+		
+	
+
+{% endblock %}
+		
+

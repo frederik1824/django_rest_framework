@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('{% static 'images/bg_1.jpg' %}');" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-end justify-content-start">
+				<div class="col-md-9 ftco-animate pb-5">
+					<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>Doctors <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">Nuestros Medicos</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section bg-light">
+		<div class="container">
+			<div class="row">
+				{% for i in entity %}
+				<div class="col-md-6 col-lg-3 ftco-animate">
+					<div class="staff">
+						<div class="img-wrap d-flex align-items-stretch">
+							{% if i.imagen %}
+							<div class="img align-self-stretch" style="background-image: url({{i.imagen.url}});"></div>
+							{% else %}
+							{% if i.get_sexo_display == 'MASCULINO' %}							
+							<div class="img align-self-stretch" style="background-image: url({% static 'images/avatar.jpg'%});"></div>
+							{% else %}
+							<div class="img align-self-stretch" style="background-image: url({% static 'images/avatarf.jfif'%});"></div>
+							{% endif %}
+							{% endif %}
+						</div>
+						<div class="text text-center">
+							<h3 class="mb-2"> {% if i.get_sexo_display == 'MASCULINO' %}Dr. {% else %} Dra. {% endif %}{{i.nombres_completo | title}}</h3>
+							<span class="position mb-2">{{i.especialidad}}t</span>
+							<div class="faded">
+								<a>Centro Medico: <p>{{i.centro}}</p></a>
+								<a>Telefono Oficina: <p>{{i.phone_number}}</p></a>
+								<a>Movil: <p>{{i.phone_number}}</p></a>
+								<ul class="ftco-social text-center">
+									<li class="ftco-animate"><a href="{{i.facebook}}" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a></li>
+									<li class="ftco-animate"><a href="{{i.instagram}}" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a></li>
+									<li class="ftco-animate"><a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-google"></span></a></li>
+									<li class="ftco-animate"><a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"></span></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				{% endfor %}
+			</div>
+	
+
+
+			<div class="row mt-5">
+				<div class="col text-center">
+				  <div class="block-27">
+			  
+					{% if medicos.has_other_pages %}
+			  
+						  <ul>
+							{% if medicos.has_previous %}
+							<li ><a href="?page={{medicos.previous_page_number}}">&lt;</a></li>              
+						   {% else %}
+						   
+						   {% endif %}
+			  
+						   {% for i in medicos.paginator.page_range %}
+							
+							{% if medicos.number == i %}
+								<li class="active"><a href="#"><span>{{i}}</span></a></li>
+								{% else %}
+								<li><a href="?page={{i}}"><span>{{i}}</span></a></li>
+							{% endif %}
+						  
+						  
+							  {% endfor %}
+							
+							{% if medicos.has_next %}
+							<li><a href="?page={{medicos.next_page_number}}">&gt;</a></li>
+							{% else %}
+			  
+							{% endif %}
+			  
+						  </ul>
+			  
+					{% endif %}
+				  </div>
+				</div>
+	
+			</div>
+		
+
+		
+			
+
+
+
+			{% if paginator.num_pages > 1%}
+				<div class="d-flex justify-content-center my-3">
+					<ul class="pagination">
+						{% if entity.has_previous %}
+							<li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></li>
+						{% endif %}
+						{% for page in paginator.page_range %}
+							{% if forloop.last and page != entity.number and paginator.num_pages > 7 %} 
+								{% if entity.next_page_number != paginator.num_pages%}
+								<li class="page-item">
+									<a class="page-link" href="?page={{ entity.number | add:1}}#pagtable">...</a>
+								</li>
+								{% endif %}
+							<li class="page-item">
+									<a class="page-link" href="?page={{paginator.num_pages}}#pagtable">{{paginator.num_pages}}</a>
+							</li>
+							{% endif %}
+							{% if page == entity.number and page > 7 %}
+							<li class="page-item">
+								<a class="page-link" href="?page={{ page | add:-1 }}#pagtable">...</a>
+							</li>    
+							{% endif %}
+							{% if page < 7 or page == entity.number %}
+							<li class="page-item {% if page == entity.number %}active{% endif %}">
+								<a class="page-link" href="?page={{ page }}#pagtable">{{ page }}</a>
+							</li>
+							{% endif %}
+						{% endfor %}
+						{% if entity.has_next %}
+							<li class="page-item d-none d-sm-block">
+								<a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a>
+							</li>
+						{% endif %}
+						</ul>
+					</div>
+					<div class="d-flex justify-content-center d-sm-none">            
+						{% if entity.has_previous %}
+							<span class="page-item"><a  class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></span>
+						{% endif %}
+						{% if entity.has_next %}
+							<span class="page-item"><a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a></span>
+						{% endif %}
+						<br>
+						<br>
+				</div>
+		{% endif %}
+
+
+
+
+
+
+		</div>
+	 </section>
+			  
+
+	
+
+
+
+
+	{% endblock %}

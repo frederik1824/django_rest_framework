@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+
+
+
+<section class="ftco-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 ftco-animate">
+        <h2 class="mb-3">{{single_service.titulo}}</h2>
+        <p>
+          <img src="{{single_service.imagen.url}}" alt="" class="img-fluid">
+        </p>
+        <p style="text-align: justify">{{single_service.descripcion}}</p>
+       
+
+  </div>
+</div>
+</section> <!-- .section -->
+
+{% endblock%}
