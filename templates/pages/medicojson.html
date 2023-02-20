@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Medicos Json</h1>
+
+
+    {% for i in entity%}
+    <div class="container mt-2">
+    <div class="row">
+    <div class="card col" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title"><span> {{i.id}}  </span>{{i.nombres_completo}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Especialidad: {{i.especialidad}}</h6>
+          {% if i.email %}
+          <p class="card-text">Correo: {{i.email}}.</p>
+          {% else%}
+          <p class="card-text">Correo: No existe correo.</p>
+          {% endif %}
+          <a href="#" class="card-link">Telefono: {{i.phone_number}}</a>
+          <a href="#" class="card-link">Centro: {{i.centro}}</a>
+        </div>
+      </div>	
+    </div>
+    </div>
+    {% endfor %}
+
+    {% if paginator.num_pages > 1%}
+    <div class="d-flex justify-content-center my-3">
+        <ul class="pagination">
+            {% if entity.has_previous %}
+                <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></li>
+            {% endif %}
+            {% for page in paginator.page_range %}
+                {% if forloop.last and page != entity.number and paginator.num_pages > 7 %} 
+                    {% if entity.next_page_number != paginator.num_pages%}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ entity.number | add:1}}#pagtable">...</a>
+                    </li>
+                    {% endif %}
+                <li class="page-item">
+                        <a class="page-link" href="?page={{paginator.num_pages}}#pagtable">{{paginator.num_pages}}</a>
+                </li>
+                {% endif %}
+                {% if page == entity.number and page > 7 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page | add:-1 }}#pagtable">...</a>
+                </li>    
+                {% endif %}
+                {% if page < 7 or page == entity.number %}
+                <li class="page-item {% if page == entity.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page }}#pagtable">{{ page }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            {% if entity.has_next %}
+                <li class="page-item d-none d-sm-block">
+                    <a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        <div class="d-flex justify-content-center d-sm-none">            
+            {% if entity.has_previous %}
+                <span class="page-item"><a  class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></span>
+            {% endif %}
+            {% if entity.has_next %}
+                <span class="page-item"><a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a></span>
+            {% endif %}
+            <br>
+            <br>
+    </div>
+{% endif %}
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</html>

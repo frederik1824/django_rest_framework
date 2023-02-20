@@ -29,4 +29,6 @@ urlpatterns = [
     path('galeria/',include('Galeria.urls')),
     path('noticias/',include('Noticias.urls')),
     path('afiliados/',include('Afiliados.urls')),
+    path('medicosjson/',include('MedicosJson.urls')),
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

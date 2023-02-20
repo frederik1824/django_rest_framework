@@ -8,4 +8,5 @@ router = routers.DefaultRouter()
 
 router.register('api/medicos', MedicosViewSet, 'medicos')
 
+
 urlpatterns = router.urls
